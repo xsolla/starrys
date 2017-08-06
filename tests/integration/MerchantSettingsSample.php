@@ -1,6 +1,6 @@
 <?php
 
-namespace Platron\Shtrihm\tests\integration;
+namespace Platron\Starrys\tests\integration;
 
 class MerchantSettings {
     const 

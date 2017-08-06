@@ -1,8 +1,8 @@
 <?php
 
-namespace Platron\Shtrihm\tests\integration;
+namespace Platron\Starrys\tests\integration;
 
-use Platron\Shtrihm\tests\integration\MerchantSettings;
+use Platron\Starrys\tests\integration\MerchantSettings;
 
 class IntegrationTestBase extends \PHPUnit_Framework_TestCase {
 

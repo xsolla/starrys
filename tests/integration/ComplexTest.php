@@ -1,6 +1,6 @@
 <?php
 
-namespace Platron\Shtrihm\tests\integration;
+namespace Platron\Starrys\tests\integration;
 
 use Platron\Starrys\clients\PostClient;
 use Platron\Starrys\data_objects\Line;
