@@ -1,0 +1,156 @@
+<?php
+
+namespace Platron\Starrys\services;
+
+use Platron\Starrys\data_objects\Line;
+use Platron\Starrys\SdkException;
+
+class ComplexRequest extends BaseServiceRequest{
+    
+	/** @var string */
+	protected $group;
+	/** @var string */
+	protected $device = 'auto';
+	/** @var int */
+	protected $requestId;
+	/** @var int */
+	protected $documentType;
+	/** @var int */
+	protected $taxMode;
+	/** @var int */
+	protected $phone;
+	/** @var string */
+	protected $email;
+	/** @var string */
+	protected $place;
+	/** @var Line[] */
+	protected $lines;
+	
+    const 
+        DOCUMENT_TYPE_SELL = 0, // Приход
+        DOCUMENT_TYPE_SELL_REFUND = 2, // Возврат прихода
+        DOCUMENT_TYPE_BUY = 1, // Расход
+        DOCUMENT_TYPE_BUY_REFUND = 3; // Возврат расхода
+    
+    const 
+        TAX_MODE_OSN = 0, // общая СН
+        TAX_MODE_USN_INCOME = 1, // упрощенная СН (доходы)
+        TAX_MODE_USN_INCOME_OUTCOME = 2, // упрощенная СН (доходы минус расходы)
+        TAX_MODE_ENDV = 3, // единый налог на вмененный доход
+        TAX_MODE_ESN = 4, // единый сельскохозяйственный налог
+        TAX_MODE_PATENT = 5; // патентная СН
+    
+    /**
+     * @inheritdoc
+     */
+    public function getRequestUrl() {
+        return self::REQUEST_URL.'Complex';
+    }
+        
+	/**
+	 * @param int $requestId id запроса
+	 */
+	public function __construct($requestId) {
+		$this->requestId = $requestId;
+	}
+	
+	/**
+	 * Установить идентификатор предприятия. Передается в случае использования одного сертификата на несколько предприятий
+	 * @param string $group
+	 * return $this
+	 */
+	public function addGroup($group){
+		$this->group = $group;
+		return $this;
+	}
+	
+	/**
+	 * Установить тип чека
+	 * @param string $documentType
+	 * @return $this
+	 */
+	public function addDocumentType($documentType){
+		if(!in_array($documentType, $this->getDocumentTypes())){
+            throw new SdkException('Wrong payment type');
+        }
+        
+        $this->documentType = $documentType;
+        return $this;
+	}
+
+	/**
+	 * Установить режим налогообложения. Нужно если у организации существует более 1 системы налогообложения
+	 * @param int $taxMode
+	 * @return $this
+	 */
+	public function addTaxMode($taxMode){
+		if(!in_array($taxMode, $this->getTaxModes())){
+            throw new SdkException('Wrong tax mode');
+        }
+		
+		$this->taxMode = $taxMode;
+		return $this;
+	}
+	
+	/**
+	 * Установить телефон покупателя
+	 * @param int $phone
+	 * @return $this
+	 */
+	public function addPhone($phone){
+		$this->phone = $phone;
+		return $this;
+	}
+	
+	/**
+	 * Установить email покупателя
+	 * @param string $email
+	 * @return $this
+	 */
+	public function addEmail($email){
+		$this->email = $email;
+		return $this;
+	}
+	
+	/**
+	 * Место расчетов. Можно указать адрес сайта
+	 * @param string $place
+	 * @return $this
+	 */
+	public function addPlace($place){
+		$this->place = $place;
+		return $this;
+	}
+	
+	/**
+	 * Добавить позицию в чек
+	 * @param Line $line
+	 */
+	public function addLine(Line $line){
+		$this->lines[] = $line;
+	}
+	
+    public function getParameters() {
+		
+    }
+    
+    protected function getDocumentTypes(){
+        return [
+            self::DOCUMENT_TYPE_BUY,
+            self::DOCUMENT_TYPE_BUY_REFUND,
+            self::DOCUMENT_TYPE_SELL,
+            self::DOCUMENT_TYPE_SELL_REFUND,
+        ];
+    }
+
+    protected function getTaxModes(){
+        return [
+            self::TAX_MODE_ENDV,
+            self::TAX_MODE_ESN,
+            self::TAX_MODE_OSN,
+            self::TAX_MODE_PATENT,
+            self::TAX_MODE_USN_INCOME,
+            self::TAX_MODE_USN_INCOME_OUTCOME,
+        ];
+    }
+}
