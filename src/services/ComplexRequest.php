@@ -8,9 +8,11 @@ use Platron\Starrys\SdkException;
 class ComplexRequest extends BaseServiceRequest{
     
 	/** @var string */
-	protected $group;
-	/** @var string */
 	protected $device = 'auto';
+	/** @var string */
+	protected $fullResponse = false;
+	/** @var string */
+	protected $group;
 	/** @var int */
 	protected $requestId;
 	/** @var int */
@@ -130,8 +132,26 @@ class ComplexRequest extends BaseServiceRequest{
 		$this->lines[] = $line;
 	}
 	
+	/**
+	 * {@inheritdoc}
+	 */
     public function getParameters() {
-		
+        $lines = [];
+        foreach($this->lines as $line){
+            $lines[] = $line->getParameters();
+        }
+        
+        $params = [
+			'Device' => $this->device,
+            'RequestId' => $this->requestId,
+            'Lines' => $lines,
+			'TaxMode' => $this->taxMode,
+			'PhoneOrEmail' => $this->email ? $this->email : $this->phone,
+			'Place' => $this->place,
+			'FullResponse' => $this->fullResponse,
+        ];
+        
+        return $params;
     }
     
     protected function getDocumentTypes(){
