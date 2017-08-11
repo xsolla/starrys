@@ -12,6 +12,8 @@ class PostClient implements iClient {
     
     const LOG_LEVEL = 0;
     
+	/** @var string */
+	protected $url;
     /** @var string путь до приватного ключа */
     protected $secretKeyPath;
     /** @var string путь до сертификата */
@@ -24,9 +26,12 @@ class PostClient implements iClient {
     
     /**
      * Секретный ключ для подписи запросов
+	 * @param string $url Путь для запросов - домен и порт
      * @param string $secretKeyPath
+	 * @param string $certPath
      */
-    public function __construct($secretKeyPath, $certPath){
+    public function __construct($url, $secretKeyPath, $certPath){
+		$this->url = $url;
         $this->secretKeyPath = $secretKeyPath;
         $this->certPath = $certPath;
     }
@@ -56,7 +61,7 @@ class PostClient implements iClient {
      */
     public function sendRequest(BaseServiceRequest $service) {       
         $requestParameters = $service->getParameters();
-        $requestUrl = $service->getRequestUrl();
+        $requestUrl = $this->url.'/'.$service->getUrlPath();
         
         $curl = curl_init($requestUrl);
         if(!empty($requestParameters)){

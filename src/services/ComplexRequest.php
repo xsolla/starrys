@@ -57,8 +57,8 @@ class ComplexRequest extends BaseServiceRequest{
     /**
      * @inheritdoc
      */
-    public function getRequestUrl() {
-        return self::REQUEST_URL.'Complex';
+    public function getUrlPath() {
+        return 'Complex';
     }
         
 	/**
