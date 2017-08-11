@@ -129,9 +129,11 @@ class ComplexRequest extends BaseServiceRequest{
 	/**
 	 * Сумма оплаты наличными. Если сумма равна нулю, то это поле можно опустить
 	 * @param float $cash
+	 * @return $this
 	 */
 	public function addCash($cash){
 		$this->cash = $cash;
+		return $this;
 	}
 	
 	/**
@@ -139,33 +141,41 @@ class ComplexRequest extends BaseServiceRequest{
 	 * @param type $firstAmount
 	 * @param type $secondAmount
 	 * @param type $thirdAmount
+	 * @return $this
 	 */
 	public function addNonCash($firstAmount, $secondAmount = 0, $thirdAmount = 0){
 		$this->nonCash = [$firstAmount, $secondAmount, $thirdAmount];
+		return $this;
 	}
 	
 	/**
 	 * Сумма оплаты предоплатой. Поле не обязательное
 	 * @param float $advancePayment
+	 * @return $this
 	 */
 	public function addAdvancePayment($advancePayment){
 		$this->advancePayment = $advancePayment;
+		return $this;
 	}
 	
 	/**
 	 * Сумма оплаты постоплатой. Не обязательное
 	 * @param float $credit
+	 * @return $this
 	 */
 	public function addCredit($credit){
 		$this->credit = $credit;
+		return $this;
 	}
 	
 	/**
 	 * Сумма оплаты встречным предоставлением. Не обязательное
 	 * @param float $consideration
+	 * @return $this
 	 */
 	public function addConsideration($consideration){
-		
+		$this->consideration = $consideration;
+		return $this;
 	}
 	
 	/**
@@ -181,17 +191,21 @@ class ComplexRequest extends BaseServiceRequest{
 	/**
 	 * Добавить позицию в чек
 	 * @param Line $line
+	 * @return $this
 	 */
 	public function addLine(Line $line){
 		$this->lines[] = $line;
+		return $this;
 	}
 	
 	/**
 	 * Установить пароль. Не обязательно. Подробнее смотри в полной версии документации
 	 * @param int $password
+	 * @return $this
 	 */
 	public function addPassword($password){
 		$this->password = $password;
+		return $this;
 	}
 	
 	/**
