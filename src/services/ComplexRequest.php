@@ -27,6 +27,18 @@ class ComplexRequest extends BaseServiceRequest{
 	protected $place;
 	/** @var Line[] */
 	protected $lines;
+	/** @var string */
+	protected $password;
+	/** @var float */
+	protected $cash;
+	/** @var float[] */
+	protected $nonCash;
+	/** @var float */
+	protected $advancePayment;
+	/** @var float */
+	protected $credit;
+	/** @var float */
+	protected $consideration;
 	
     const 
         DOCUMENT_TYPE_SELL = 0, // Приход
@@ -115,6 +127,48 @@ class ComplexRequest extends BaseServiceRequest{
 	}
 	
 	/**
+	 * Сумма оплаты наличными. Если сумма равна нулю, то это поле можно опустить
+	 * @param float $cash
+	 */
+	public function addCash($cash){
+		$this->cash = $cash;
+	}
+	
+	/**
+	 * Массив из 3-ех элеметов с суммами оплат 3 различных типов. Обычно передается только первое значение
+	 * @param type $firstAmount
+	 * @param type $secondAmount
+	 * @param type $thirdAmount
+	 */
+	public function addNonCash($firstAmount, $secondAmount = 0, $thirdAmount = 0){
+		$this->nonCash = [$firstAmount, $secondAmount, $thirdAmount];
+	}
+	
+	/**
+	 * Сумма оплаты предоплатой. Поле не обязательное
+	 * @param float $advancePayment
+	 */
+	public function addAdvancePayment($advancePayment){
+		$this->advancePayment = $advancePayment;
+	}
+	
+	/**
+	 * Сумма оплаты постоплатой. Не обязательное
+	 * @param float $credit
+	 */
+	public function addCredit($credit){
+		$this->credit = $credit;
+	}
+	
+	/**
+	 * Сумма оплаты встречным предоставлением. Не обязательное
+	 * @param float $consideration
+	 */
+	public function addConsideration($consideration){
+		
+	}
+	
+	/**
 	 * Место расчетов. Можно указать адрес сайта
 	 * @param string $place
 	 * @return $this
@@ -133,6 +187,14 @@ class ComplexRequest extends BaseServiceRequest{
 	}
 	
 	/**
+	 * Установить пароль. Не обязательно. Подробнее смотри в полной версии документации
+	 * @param int $password
+	 */
+	public function addPassword($password){
+		$this->password = $password;
+	}
+	
+	/**
 	 * {@inheritdoc}
 	 */
     public function getParameters() {
@@ -143,8 +205,14 @@ class ComplexRequest extends BaseServiceRequest{
         
         $params = [
 			'Device' => $this->device,
+			'Password' => $this->password,
             'RequestId' => $this->requestId,
             'Lines' => $lines,
+			'Cash' => $this->cash,
+			'NonCash' => $this->nonCash,
+			'AdvancePayment' => $this->advancePayment,
+			'Credit' => $this->credit,
+			'Consideration' => $this->consideration,
 			'TaxMode' => $this->taxMode,
 			'PhoneOrEmail' => $this->email ? $this->email : $this->phone,
 			'Place' => $this->place,

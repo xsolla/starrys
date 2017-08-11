@@ -6,5 +6,5 @@ class MerchantSettings {
     const 
         SECRET_KEY_NAME = 'client.key',
         CERT_NAME = 'client.crt',
-        GROUP = 'test';
+		API_STARRYS_URL = 'https://fce.starrys.ru:4443';
 }
