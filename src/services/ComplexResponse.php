@@ -28,16 +28,26 @@ class ComplexResponse extends BaseServiceResponse {
 	
 	/** @var string Заводской номер устройства */
 	public $Name;
+	/** @var string Адрес устройства */
+	public $Address;
 	
     /**
      * @inheritdoc
      */    
     public function __construct(stdClass $response) {
-        if(!empty($response->Response->error)){
-			$this->errorCode = $response->Response->error;
+		
+		if(!empty($response->FCEError)){
+			$this->errorCode = $response->FCEError;
+			$this->errorMessages[] = $response->ErrorDescription;
+			return $this;
+		}
+		
+        if(!empty($response->Response->Error)){
+			$this->errorCode = $response->Response->Error;
 			foreach($response->Response->ErrorMessages as $message){
 				$this->errorMessages .= $message;
 			}
+			return $this;
 		}
 		
 		parent::__construct($response);

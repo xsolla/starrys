@@ -46,8 +46,8 @@ class Line extends BaseDataObject{
             throw new SdkException('Wrong tax');
         }
         
-        $this->Qty = $qty;
-        $this->Price = $price;
+        $this->Qty = (int)$qty;
+        $this->Price = (float)$price;
         $this->taxId = $taxId;
 		$this->description = $description;
     }

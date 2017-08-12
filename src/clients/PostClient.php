@@ -26,7 +26,7 @@ class PostClient implements iClient {
     
     /**
      * Секретный ключ для подписи запросов
-	 * @param string $url Путь для запросов - домен и порт
+	 * @param string $url Путь для запросов https://<адрес, указанный в личном кабинете>:<порт, указанный в личном кабинете>
      * @param string $secretKeyPath
 	 * @param string $certPath
      */
@@ -61,8 +61,8 @@ class PostClient implements iClient {
      */
     public function sendRequest(BaseServiceRequest $service) {       
         $requestParameters = $service->getParameters();
-        $requestUrl = $this->url.'/'.$service->getUrlPath();
-        
+        $requestUrl = $this->url.$service->getUrlPath();
+		
         $curl = curl_init($requestUrl);
         if(!empty($requestParameters)){
             curl_setopt($curl, CURLOPT_POST, 1);
@@ -76,7 +76,7 @@ class PostClient implements iClient {
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->connectionTimeout);
         
         $response = curl_exec($curl);
-        
+		
         if($this->logger){
             $this->logger->log(self::LOG_LEVEL, 'Requested url '.$requestUrl.' params '. json_encode($requestParameters));
             $this->logger->log(self::LOG_LEVEL, 'Response '.$response);

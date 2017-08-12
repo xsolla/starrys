@@ -58,7 +58,7 @@ class ComplexRequest extends BaseServiceRequest{
      * @inheritdoc
      */
     public function getUrlPath() {
-        return 'Complex';
+        return '/fr/api/v2/Complex';
     }
         
 	/**
@@ -216,11 +216,11 @@ class ComplexRequest extends BaseServiceRequest{
         foreach($this->lines as $line){
             $lines[] = $line->getParameters();
         }
-        
+		
         $params = [
 			'Device' => $this->device,
 			'Password' => $this->password,
-            'RequestId' => $this->requestId,
+            'RequestId' => (string)$this->requestId,
             'Lines' => $lines,
 			'Cash' => $this->cash,
 			'NonCash' => $this->nonCash,
