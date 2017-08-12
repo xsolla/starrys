@@ -36,7 +36,7 @@ class Line extends BaseDataObject{
     
     /**
 	 * @param string $description Наименование товарной позиции
-     * @param int $qty Количество. Указывается в тысячных долях, т.е. если необходимо передать 2,5 килограмма - надо передать 2500
+     * @param float $qty Количество. Указывается в штуках. До 3 знаков после запятой
 	 * @param float $price Цена указывается в копейках
      * @param int $taxId Налоговая ставка из констант
      * @throws SdkException
@@ -46,7 +46,7 @@ class Line extends BaseDataObject{
             throw new SdkException('Wrong tax');
         }
         
-        $this->Qty = (int)$qty;
+        $this->Qty = (int)($qty * 1000);
         $this->Price = (float)$price;
         $this->taxId = $taxId;
 		$this->description = $description;

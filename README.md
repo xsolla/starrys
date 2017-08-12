@@ -21,19 +21,4 @@ vendor/bin/phpunit tests/integration
 
 ### 1. Создание чека
 
-```php
-$client = new Platron\Starrys\clients\PostClient();
-
-$receiptPosition = new Platron\Starrys\data_objects\ReceiptPosition('test product', 100.00, 2, Platron\Starrys\data_objects\ReceiptPosition::TAX_VAT10);
-
-$createDocumentService = (new Platron\Starrys\services\CreateDocumentRequest($transactionId))
-    ->addCustomerEmail('test@test.ru')
-    ->addCustomerPhone('79268752662')
-    ->addGroupCode('groupCode')
-    ->addInn('inn')
-    ->addOperationType(Platron\Starrys\services\CreateDocumentRequest::OPERATION_TYPE_BUY)
-    ->addPaymentType(Platron\Starrys\services\CreateDocumentRequest::PAYMENT_TYPE_ELECTRON)
-    ->addTaxatitionSystem(Platron\Starrys\services\CreateDocumentRequest::TAXATITION_SYSTEM_ESN)
-    ->addReceiptPosition($receiptPosition);
-$createDocumentResponse = new Platron\Starrys\services\CreateDocumentResponse($client->sendRequest($createDocumentService));
-```
+Смотрите в интеграционных тестах - /tests/integration/

@@ -7,10 +7,18 @@ use stdClass;
 
 class ComplexResponse extends BaseServiceResponse {
 
-    /** @var float Сдача */
-    public $Change;
-	/** @var string Дата и время формирования документа */
-    public $Date;
+	/** @var int День формирования документа */
+    public $Day;
+	/** @var int Месяц формирования документа */
+    public $Month;
+	/** @var int Год формирования документа */
+    public $Year;
+	/** @var int Час формирования документа */
+    public $Hour;
+	/** @var int Минута формирования документа */
+    public $Minute;
+	/** @var int Секунда формирования документа */
+    public $Second;
 	/** @var string Регистрационный номер документа */
     public $DeviceRegistrationNumber;
 	/** @var string Заводской номер устройста */
@@ -35,7 +43,6 @@ class ComplexResponse extends BaseServiceResponse {
      * @inheritdoc
      */    
     public function __construct(stdClass $response) {
-		
 		if(!empty($response->FCEError)){
 			$this->errorCode = $response->FCEError;
 			$this->errorMessages[] = $response->ErrorDescription;
@@ -52,5 +59,7 @@ class ComplexResponse extends BaseServiceResponse {
 		
 		parent::__construct($response);
 		parent::__construct($response->Device);
+		parent::__construct($response->Date->Date);
+		parent::__construct($response->Date->Time);
     }
 }

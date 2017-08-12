@@ -12,14 +12,10 @@ abstract class BaseServiceResponse {
 	/** @var string */
 	protected $errorMessages;
     
-    /** @var stdClass */
-    protected $response;
-    
     /**
      * @param stdClass $response
      */
     public function __construct(stdClass $response) {
-        $this->response = $response;
         foreach (get_object_vars($this) as $name => $value) {
 			if (!empty($response->$name)) {
 				$this->$name = $response->$name;
