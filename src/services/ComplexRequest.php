@@ -47,12 +47,12 @@ class ComplexRequest extends BaseServiceRequest{
         DOCUMENT_TYPE_BUY_REFUND = 3; // Возврат расхода
     
     const 
-        TAX_MODE_OSN = 0, // общая СН
-        TAX_MODE_USN_INCOME = 1, // упрощенная СН (доходы)
-        TAX_MODE_USN_INCOME_OUTCOME = 2, // упрощенная СН (доходы минус расходы)
-        TAX_MODE_ENDV = 3, // единый налог на вмененный доход
-        TAX_MODE_ESN = 4, // единый сельскохозяйственный налог
-        TAX_MODE_PATENT = 5; // патентная СН
+        TAX_MODE_OSN = 1, // общая СН
+        TAX_MODE_USN_INCOME = 2, // упрощенная СН (доходы)
+        TAX_MODE_USN_INCOME_OUTCOME = 4, // упрощенная СН (доходы минус расходы)
+        TAX_MODE_ENDV = 8, // единый налог на вмененный доход
+        TAX_MODE_ESN = 16, // единый сельскохозяйственный налог
+        TAX_MODE_PATENT = 32; // патентная СН
     
     /**
      * @inheritdoc
