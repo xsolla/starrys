@@ -3,7 +3,7 @@ Platron Starrys SDK
 ## Установка
 
 Проект предполагает через установку с использованием composer
-<pre><code>composer require platron/starrys</pre></code>
+<pre><code>composer require payprocessing/starrys</pre></code>
 
 ## Тесты
 Для работы тестов необходим PHPUnit, для установки необходимо выполнить команду
