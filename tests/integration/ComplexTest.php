@@ -16,7 +16,6 @@ class ComplexTest extends IntegrationTestBase {
 		$complexServise = new ComplexRequest(time());
 		$complexServise->addDocumentType(ComplexRequest::DOCUMENT_TYPE_BUY)
 			->addEmail('test@test.ru')
-			->addGroup($this->group)
 			->addPhone('79050000000')
 			->addPlace('www.test.ru')
 			->addTaxMode($this->taxMode)
