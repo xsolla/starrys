@@ -47,7 +47,7 @@ abstract class BaseServiceResponse {
     
     /**
      * Получить описание ошибки
-     * @return string
+     * @return array
      */
     public function getErrorDescription(){
         return $this->errorMessages;
