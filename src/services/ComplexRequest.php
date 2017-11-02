@@ -219,6 +219,7 @@ class ComplexRequest extends BaseServiceRequest{
 		
         $params = [
 			'Device' => $this->device,
+            'Group' => $this->group,
 			'Password' => $this->password,
             'RequestId' => (string)$this->requestId,
             'Lines' => $lines,
