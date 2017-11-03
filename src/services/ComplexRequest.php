@@ -138,9 +138,9 @@ class ComplexRequest extends BaseServiceRequest{
 	
 	/**
 	 * Массив из 3-ех элеметов с суммами оплат 3 различных типов. Обычно передается только первое значение
-	 * @param type $firstAmount
-	 * @param type $secondAmount
-	 * @param type $thirdAmount
+	 * @param int $firstAmount Сумма в копейках
+	 * @param int $secondAmount Сумма в копейках
+	 * @param int $thirdAmount Сумма в копейках
 	 * @return $this
 	 */
 	public function addNonCash($firstAmount, $secondAmount = 0, $thirdAmount = 0){
@@ -150,7 +150,7 @@ class ComplexRequest extends BaseServiceRequest{
 	
 	/**
 	 * Сумма оплаты предоплатой. Поле не обязательное
-	 * @param float $advancePayment
+	 * @param int $advancePayment Сумма в копейках
 	 * @return $this
 	 */
 	public function addAdvancePayment($advancePayment){
@@ -160,7 +160,7 @@ class ComplexRequest extends BaseServiceRequest{
 	
 	/**
 	 * Сумма оплаты постоплатой. Не обязательное
-	 * @param float $credit
+	 * @param int $credit Сумма в копейках
 	 * @return $this
 	 */
 	public function addCredit($credit){
@@ -170,7 +170,7 @@ class ComplexRequest extends BaseServiceRequest{
 	
 	/**
 	 * Сумма оплаты встречным предоставлением. Не обязательное
-	 * @param float $consideration
+	 * @param int $consideration Сумма в копейках
 	 * @return $this
 	 */
 	public function addConsideration($consideration){

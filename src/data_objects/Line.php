@@ -37,7 +37,7 @@ class Line extends BaseDataObject{
     /**
 	 * @param string $description Наименование товарной позиции
      * @param float $qty Количество. Указывается в штуках. До 3 знаков после запятой
-	 * @param float $price Цена указывается в копейках
+	 * @param int $price Цена указывается в копейках
      * @param int $taxId Налоговая ставка из констант
      * @throws SdkException
      */
