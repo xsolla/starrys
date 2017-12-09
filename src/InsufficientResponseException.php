@@ -4,7 +4,7 @@ namespace Platron\Starrys;
 
 use Throwable;
 
-class InsufficientResponseException extends \DomainException
+class InsufficientResponseException extends \InvalidArgumentException
 {
     public function __construct(
         $response,
