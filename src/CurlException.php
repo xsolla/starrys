@@ -4,7 +4,7 @@ namespace Platron\Starrys;
 
 use Throwable;
 
-class CurlException extends \DomainException
+class CurlException extends \RuntimeException
 {
     public function __construct($logInfo, $curlError, $code = 0, Throwable $previous = null)
     {
