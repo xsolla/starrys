@@ -7,6 +7,20 @@ abstract class BaseServiceRequest
 
     const REQUEST_URL = 'https://fce.starrys.ru:4443/fr/api/v2/';
 
+    /** @var int */
+    protected $requestId;
+
+    /** @var int */
+    protected $password;
+
+    /**
+     * @param int $requestId id запроса
+     */
+    public function __construct($requestId)
+    {
+        $this->requestId = $requestId;
+    }
+
     /**
      * Получить путь для запроса относительно домена
      * @return string
@@ -19,13 +33,25 @@ abstract class BaseServiceRequest
      */
     public function getParameters()
     {
-        $filledvars = array();
+        $parameters = array();
+
         foreach (get_object_vars($this) as $name => $value) {
             if ($value) {
-                $filledvars[$name] = (string)$value;
+                $parameters[ucfirst($name)] = $value;
             }
         }
 
-        return $filledvars;
+        return $parameters;
+    }
+
+    /**
+     * Установить пароль. Обязательно. Подробнее смотри в полной версии документации
+     * @param int $password
+     * @return $this
+     */
+    public function addPassword($password)
+    {
+        $this->password = $password;
+        return $this;
     }
 }

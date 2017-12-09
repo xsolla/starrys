@@ -3,19 +3,15 @@
 namespace Platron\Starrys\services;
 
 use Platron\Starrys\data_objects\Line;
-use Platron\Starrys\CurlException;
 
 class ComplexRequest extends BaseServiceRequest
 {
-
     /** @var string */
     protected $device = 'auto';
     /** @var string */
     protected $fullResponse = false;
     /** @var string */
     protected $group;
-    /** @var int */
-    protected $requestId;
     /** @var int */
     protected $documentType;
     /** @var int */
@@ -30,8 +26,6 @@ class ComplexRequest extends BaseServiceRequest
     protected $lines;
     /** @var string */
     protected $clientId;
-    /** @var string */
-    protected $password;
     /** @var float */
     protected $cash;
     /** @var float[] */
@@ -66,17 +60,9 @@ class ComplexRequest extends BaseServiceRequest
     }
 
     /**
-     * @param int $requestId id запроса
-     */
-    public function __construct($requestId)
-    {
-        $this->requestId = $requestId;
-    }
-
-    /**
      * Установить идентификатор предприятия. Передается в случае использования одного сертификата на несколько предприятий
      * @param string $group
-     * return $this
+     * @return $this
      */
     public function addGroup($group)
     {
@@ -223,17 +209,6 @@ class ComplexRequest extends BaseServiceRequest
     public function addClientId($clientId)
     {
         $this->clientId = $clientId;
-        return $this;
-    }
-
-    /**
-     * Установить пароль. Не обязательно. Подробнее смотри в полной версии документации
-     * @param int $password
-     * @return $this
-     */
-    public function addPassword($password)
-    {
-        $this->password = $password;
         return $this;
     }
 

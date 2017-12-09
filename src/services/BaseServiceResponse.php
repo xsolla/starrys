@@ -7,12 +7,39 @@ use stdClass;
 
 abstract class BaseServiceResponse
 {
-
     /** @var int */
     protected $errorCode;
 
-    /** @var string */
+    /** @var array */
     protected $errorMessages;
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct(stdClass $response)
+    {
+        if (!empty($response->FCEError)) {
+            $this->errorCode = $response->FCEError;
+            $this->errorMessages[] = $response->ErrorDescription;
+            return;
+        }
+
+        if (!empty($response->Response->Error)) {
+            $this->errorCode = $response->Response->Error;
+
+            if (!empty($response->Response->ErrorMessages)) {
+                foreach ($response->Response->ErrorMessages as $message) {
+                    $this->errorMessages .= $message;
+                }
+            }
+
+            return;
+        }
+
+        $this->importResponse($response);
+    }
+
+    abstract protected function importResponse(stdClass $response);
 
     /**
      * @param stdClass $response
@@ -24,7 +51,7 @@ abstract class BaseServiceResponse
         $subResponse = $this->getSubResponse($response, ...$subFields);
 
         foreach (get_object_vars($this) as $name => $value) {
-            if (!empty($subResponse->$name)) {
+            if (isset($subResponse->$name)) {
                 $this->$name = $subResponse->$name;
             }
         }
@@ -105,4 +132,9 @@ abstract class BaseServiceResponse
     {
         return implode(',', $this->errorMessages);
     }
+
+    /**
+     * @return array
+     */
+    abstract public function getLogInfo();
 }

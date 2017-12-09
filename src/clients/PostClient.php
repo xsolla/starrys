@@ -2,11 +2,9 @@
 
 namespace Platron\Starrys\clients;
 
-use Platron\Starrys\clients\iClient;
 use Platron\Starrys\CurlException;
 use Platron\Starrys\ServerErrorException;
 use Platron\Starrys\services\BaseServiceRequest;
-use stdClass;
 
 class PostClient implements iClient
 {
@@ -48,7 +46,7 @@ class PostClient implements iClient
     }
 
     /**
-     *  Получение залогированной информации
+     * Получение залогированной информации
      * @return string
      */
     public function getLogInfo()

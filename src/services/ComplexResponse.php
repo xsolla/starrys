@@ -45,24 +45,10 @@ class ComplexResponse extends BaseServiceResponse
     public $Address;
 
     /**
-     * @inheritdoc
+     * @param stdClass $response
      */
-    public function __construct(stdClass $response)
+    protected function importResponse(stdClass $response)
     {
-        if (!empty($response->FCEError)) {
-            $this->errorCode = $response->FCEError;
-            $this->errorMessages[] = $response->ErrorDescription;
-            return;
-        }
-
-        if (!empty($response->Response->Error)) {
-            $this->errorCode = $response->Response->Error;
-            foreach ($response->Response->ErrorMessages as $message) {
-                $this->errorMessages .= $message;
-            }
-            return;
-        }
-
         $this->import($response);
         $this->import($response, 'Date', 'Date');
         $this->import($response, 'Date', 'Time');
@@ -90,5 +76,13 @@ class ComplexResponse extends BaseServiceResponse
         if (empty($this->TurnNumber)) {
             throw new InsufficientResponseException($closeDocumentCommand, 'TurnNumber');
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getLogInfo()
+    {
+        return [];
     }
 }
