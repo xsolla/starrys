@@ -59,19 +59,19 @@ abstract class BaseServiceResponse {
     /**
      * Возвращает вложенный ответ на команду Complex по имени
      * @param array $complex
-     * @param string $responseName
+     * @param string $commandName
      * @return stdClass
      * @throws \Platron\Starrys\InsufficientResponseException
      */
-    public function findResponseInComplexByName(array $complex, $responseName)
+    public function findCommandInComplexByName(array $complex, $commandName)
     {
-        foreach ($complex as $response) {
-            if (preg_match($responseName, $response->Path)) {
-                return $response;
+        foreach ($complex as $command) {
+            if (false !== strpos($command->Path, $commandName)) {
+                return $command;
             }
         }
 
-        throw new InsufficientResponseException($complex, $responseName);
+        throw new InsufficientResponseException($complex, $commandName);
     }
     
     /**

@@ -37,7 +37,7 @@ class ComplexResponse extends BaseServiceResponse {
 	public $QR;
 	/** @var string Номер смены */
 	public $TurnNumber;
-	
+
 	/** @var string Заводской номер устройства */
 	public $Name;
 	/** @var string Адрес устройства */
@@ -52,7 +52,7 @@ class ComplexResponse extends BaseServiceResponse {
 			$this->errorMessages[] = $response->ErrorDescription;
 			return;
 		}
-		
+
         if(!empty($response->Response->Error)){
 			$this->errorCode = $response->Response->Error;
 			foreach($response->Response->ErrorMessages as $message){
@@ -60,7 +60,7 @@ class ComplexResponse extends BaseServiceResponse {
 			}
 			return;
 		}
-		
+
 		$this->import($response);
         $this->import($response, 'Device');
         $this->import($response, 'Date', 'Date');
@@ -74,11 +74,11 @@ class ComplexResponse extends BaseServiceResponse {
      */
     private function importTurnNumber(stdClass $response)
     {
-        $closeDocumentCommand = $this->findResponseInComplexByName(
+        $closeDocumentCommand = $this->findCommandInComplexByName(
             $response->Responses,
             self::CLOSE_DOCUMENT_COMMAND_NAME
         );
 
-        $this->TurnNumber = $closeDocumentCommand->TurnNumber;
+        $this->TurnNumber = $closeDocumentCommand->Response->TurnNumber;
     }
 }
