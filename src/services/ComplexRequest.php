@@ -3,7 +3,7 @@
 namespace Platron\Starrys\services;
 
 use Platron\Starrys\data_objects\Line;
-use Platron\Starrys\SdkException;
+use Platron\Starrys\CurlException;
 
 class ComplexRequest extends BaseServiceRequest{
     
@@ -85,7 +85,7 @@ class ComplexRequest extends BaseServiceRequest{
 	 */
 	public function addDocumentType($documentType){
 		if(!in_array($documentType, $this->getDocumentTypes())){
-            throw new SdkException('Wrong payment type');
+            throw new \InvalidArgumentException('Wrong payment type');
         }
         
         $this->documentType = $documentType;
@@ -99,7 +99,7 @@ class ComplexRequest extends BaseServiceRequest{
 	 */
 	public function addTaxMode($taxMode){
 		if(!in_array($taxMode, $this->getTaxModes())){
-            throw new SdkException('Wrong tax mode');
+            throw new \InvalidArgumentException('Wrong tax mode');
         }
 		
 		$this->taxMode = $taxMode;
@@ -207,6 +207,17 @@ class ComplexRequest extends BaseServiceRequest{
 		$this->password = $password;
 		return $this;
 	}
+
+    /**
+     * Установить флаг возврата полного ответа. Не обязательно
+     * @param bool $fullResponse
+     * @return $this
+     */
+	public function addFullResponse($fullResponse)
+    {
+        $this->fullResponse = $fullResponse;
+        return $this;
+    }
 	
 	/**
 	 * {@inheritdoc}

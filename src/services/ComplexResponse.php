@@ -7,6 +7,8 @@ use stdClass;
 
 class ComplexResponse extends BaseServiceResponse {
 
+    const CLOSE_DOCUMENT_COMMAND_NAME = 'CloseDocument';
+
 	/** @var int День формирования документа */
     public $Day;
 	/** @var int Месяц формирования документа */
@@ -33,20 +35,22 @@ class ComplexResponse extends BaseServiceResponse {
 	public $GrandTotal;
 	/** @var string QR-код чека */
 	public $QR;
+	/** @var string Номер смены */
+	public $TurnNumber;
 	
 	/** @var string Заводской номер устройства */
 	public $Name;
 	/** @var string Адрес устройства */
 	public $Address;
-	
+
     /**
      * @inheritdoc
-     */    
+     */
     public function __construct(stdClass $response) {
 		if(!empty($response->FCEError)){
 			$this->errorCode = $response->FCEError;
 			$this->errorMessages[] = $response->ErrorDescription;
-			return $this;
+			return;
 		}
 		
         if(!empty($response->Response->Error)){
@@ -54,12 +58,27 @@ class ComplexResponse extends BaseServiceResponse {
 			foreach($response->Response->ErrorMessages as $message){
 				$this->errorMessages .= $message;
 			}
-			return $this;
+			return;
 		}
 		
-		parent::__construct($response);
-		parent::__construct($response->Device);
-		parent::__construct($response->Date->Date);
-		parent::__construct($response->Date->Time);
+		$this->import($response);
+        $this->import($response, 'Device');
+        $this->import($response, 'Date', 'Date');
+        $this->import($response, 'Date', 'Time');
+        $this->importTurnNumber($response);
+    }
+
+    /**
+     * @param stdClass $response
+     * @throws \Platron\Starrys\InsufficientResponseException
+     */
+    private function importTurnNumber(stdClass $response)
+    {
+        $closeDocumentCommand = $this->findResponseInComplexByName(
+            $response->Responses,
+            self::CLOSE_DOCUMENT_COMMAND_NAME
+        );
+
+        $this->TurnNumber = $closeDocumentCommand->TurnNumber;
     }
 }

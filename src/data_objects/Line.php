@@ -2,7 +2,7 @@
 
 namespace Platron\Starrys\data_objects;
 
-use Platron\Starrys\SdkException;
+use Platron\Starrys\CurlException;
 
 class Line extends BaseDataObject{
     
@@ -39,11 +39,11 @@ class Line extends BaseDataObject{
      * @param float $qty Количество. Указывается в штуках. До 3 знаков после запятой
 	 * @param int $price Цена указывается в копейках
      * @param int $taxId Налоговая ставка из констант
-     * @throws SdkException
+     * @throws CurlException
      */
     public function __construct($description, $qty, $price, $taxId) {
         if(!in_array($taxId, $this->getTaxes())){
-            throw new SdkException('Wrong tax');
+            throw new \InvalidArgumentException('Wrong tax');
         }
         
         $this->Qty = (int)($qty * 1000);
@@ -58,7 +58,7 @@ class Line extends BaseDataObject{
 	 */
 	public function addPayAttribute($payAttribute){
 		if(!in_array($payAttribute, $this->getPayAttributes())){
-            throw new SdkException('Wrong pay attribute');
+            throw new \InvalidArgumentException('Wrong pay attribute');
         }
 		
 		$this->payAttribute = $payAttribute;
