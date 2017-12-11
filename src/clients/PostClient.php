@@ -7,10 +7,11 @@ use Platron\Starrys\CurlException;
 use Platron\Starrys\services\BaseServiceRequest;
 use stdClass;
 
-class PostClient implements iClient {
-    
-	/** @var string */
-	protected $url;
+class PostClient implements iClient
+{
+
+    /** @var string */
+    protected $url;
     /** @var string путь до приватного ключа */
     protected $secretKeyPath;
     /** @var string путь до сертификата */
@@ -20,25 +21,27 @@ class PostClient implements iClient {
 
     /** @var int */
     protected $connectionTimeout = 30;
-    
+
     /**
      * Секретный ключ для подписи запросов
-	 * @param string $url Путь для запросов https://<адрес, указанный в личном кабинете>:<порт, указанный в личном кабинете>
+     * @param string $url Путь для запросов https://<адрес, указанный в личном кабинете>:<порт, указанный в личном кабинете>
      * @param string $secretKeyPath
-	 * @param string $certPath
+     * @param string $certPath
      */
-    public function __construct($url, $secretKeyPath, $certPath){
-		$this->url = $url;
+    public function __construct($url, $secretKeyPath, $certPath)
+    {
+        $this->url = $url;
         $this->secretKeyPath = $secretKeyPath;
         $this->certPath = $certPath;
     }
-    
+
     /**
      * Установка максимального времени ожидания
      * @param int $connectionTimeout
      * @return self
      */
-    public function setConnectionTimeout($connectionTimeout){
+    public function setConnectionTimeout($connectionTimeout)
+    {
         $this->connectionTimeout = $connectionTimeout;
         return $this;
     }
@@ -56,23 +59,24 @@ class PostClient implements iClient {
      * @inheritdoc
      * @throws \Platron\Starrys\CurlException
      */
-    public function sendRequest(BaseServiceRequest $service) {       
+    public function sendRequest(BaseServiceRequest $service)
+    {
         $requestParameters = $service->getParameters();
-        $requestUrl = $this->url.$service->getUrlPath();
-		
+        $requestUrl = $this->url . $service->getUrlPath();
+
         $curl = curl_init($requestUrl);
         $this->addRequestParameters($requestParameters, $curl);
         $this->addSslAuthentication($curl);
-        
+
         $response = curl_exec($curl);
 
         $this->fillLogInfo($requestUrl, $requestParameters, $response);
-        	
-		if(curl_errno($curl)){
-			throw new CurlException($this->logInfo, curl_error($curl), curl_errno($curl));
-		}
 
-		return !empty(json_decode($response)) ? json_decode($response) : new stdClass();
+        if (curl_errno($curl)) {
+            throw new CurlException($this->logInfo, curl_error($curl), curl_errno($curl));
+        }
+
+        return !empty(json_decode($response)) ? json_decode($response) : new stdClass();
     }
 
     /**

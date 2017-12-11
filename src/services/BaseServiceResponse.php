@@ -5,27 +5,29 @@ namespace Platron\Starrys\services;
 use Platron\Starrys\InsufficientResponseException;
 use stdClass;
 
-abstract class BaseServiceResponse {
-    
+abstract class BaseServiceResponse
+{
+
     /** @var int */
     protected $errorCode;
-	
-	/** @var string */
-	protected $errorMessages;
+
+    /** @var string */
+    protected $errorMessages;
 
     /**
      * @param stdClass $response
      * @param array $subFields
      * @throws \Platron\Starrys\InsufficientResponseException
      */
-    public function import(stdClass $response, ...$subFields) {
+    public function import(stdClass $response, ...$subFields)
+    {
         $subResponse = $this->getSubResponse($response, $subFields);
 
         foreach (get_object_vars($this) as $name => $value) {
-			if (!empty($subResponse->$name)) {
-				$this->$name = $subResponse->$name;
-			}
-		}
+            if (!empty($subResponse->$name)) {
+                $this->$name = $subResponse->$name;
+            }
+        }
     }
 
     /**
@@ -46,7 +48,7 @@ abstract class BaseServiceResponse {
         }
         return $subResponse;
     }
-    
+
     /**
      * Проверка на ошибки в ответе
      * @return boolean
@@ -73,7 +75,7 @@ abstract class BaseServiceResponse {
 
         throw new InsufficientResponseException($complex, $commandName);
     }
-    
+
     /**
      * Получить код ошибки из ответа
      * @return int
@@ -82,7 +84,7 @@ abstract class BaseServiceResponse {
     {
         return $this->errorCode;
     }
-    
+
     /**
      * Получить описание ошибки
      * @return string
