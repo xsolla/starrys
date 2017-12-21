@@ -21,7 +21,7 @@ abstract class BaseServiceResponse
      */
     public function import(stdClass $response, ...$subFields)
     {
-        $subResponse = $this->getSubResponse($response, $subFields);
+        $subResponse = $this->getSubResponse($response, ...$subFields);
 
         foreach (get_object_vars($this) as $name => $value) {
             if (!empty($subResponse->$name)) {
@@ -33,10 +33,10 @@ abstract class BaseServiceResponse
     /**
      * @param stdClass $response
      * @param array $subFields
-     * @return stdClass
+     * @return stdClass|array
      * @throws \Platron\Starrys\InsufficientResponseException
      */
-    private function getSubResponse(stdClass $response, array $subFields)
+    public function getSubResponse(stdClass $response, ...$subFields)
     {
         $subResponse = $response;
         foreach ($subFields as $field) {
@@ -47,6 +47,18 @@ abstract class BaseServiceResponse
             }
         }
         return $subResponse;
+    }
+
+    public function retrieveByTagId(array $tags, $tagId)
+    {
+        /** @var stdClass $tag */
+        foreach ($tags as $tag) {
+            if (isset($tag->TagID, $tag->Value) && $tagId === $tag->TagID) {
+                return $tag->Value;
+            }
+        }
+
+        return null;
     }
 
     /**

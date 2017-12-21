@@ -7,7 +7,7 @@ use stdClass;
 
 class ComplexResponse extends BaseServiceResponse
 {
-
+    const TURN_NUMBER_TAG_ID = 1038;
     const CLOSE_DOCUMENT_COMMAND_NAME = 'CloseDocument';
 
     /** @var int День формирования документа */
@@ -64,7 +64,6 @@ class ComplexResponse extends BaseServiceResponse
         }
 
         $this->import($response);
-        $this->import($response, 'Device');
         $this->import($response, 'Date', 'Date');
         $this->import($response, 'Date', 'Time');
         $this->importTurnNumber($response);
@@ -84,6 +83,11 @@ class ComplexResponse extends BaseServiceResponse
         if (isset($closeDocumentCommand->Response->TurnNumber)) {
             $this->TurnNumber = $closeDocumentCommand->Response->TurnNumber;
         } else {
+            $fiscalDocument = $this->getSubResponse($closeDocumentCommand, 'Response', 'FiscalDocument', 'Value');
+            $this->TurnNumber = $this->retrieveByTagId($fiscalDocument, self::TURN_NUMBER_TAG_ID);
+        }
+
+        if (empty($this->TurnNumber)) {
             throw new InsufficientResponseException($closeDocumentCommand, 'TurnNumber');
         }
     }

@@ -14,9 +14,9 @@ class InsufficientResponseException extends \InvalidArgumentException
         Throwable $previous = null
     ) {
         $message = 'Cannot find property ' . $missedProperty . PHP_EOL;
-        $message .= 'Response: ' . print_r($response, true) . PHP_EOL;
+        $message .= 'Response: ' . json_encode($response) . PHP_EOL;
         if (null !== $path) {
-            $message .= 'Path: ' . print_r($path, true);
+            $message .= 'Path: ' . json_encode($path);
         }
 
         parent::__construct($message, $code, $previous);
