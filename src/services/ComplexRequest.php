@@ -28,6 +28,8 @@ class ComplexRequest extends BaseServiceRequest
     protected $place;
     /** @var Line[] */
     protected $lines;
+    /** @var int */
+    protected $clientId;
     /** @var string */
     protected $password;
     /** @var float */
@@ -214,6 +216,17 @@ class ComplexRequest extends BaseServiceRequest
     }
 
     /**
+     * Установить id клиента. Не обязательно. Подробнее смотри в полной версии документации
+     * @param int $clientId
+     * @return $this
+     */
+    public function addClientId($clientId)
+    {
+        $this->clientId = $clientId;
+        return $this;
+    }
+
+    /**
      * Установить пароль. Не обязательно. Подробнее смотри в полной версии документации
      * @param int $password
      * @return $this
@@ -248,6 +261,7 @@ class ComplexRequest extends BaseServiceRequest
         $params = [
             'Device' => $this->device,
             'Group' => $this->group,
+            'ClientId' => $this->clientId,
             'Password' => $this->password,
             'RequestId' => (string)$this->requestId,
             'Lines' => $lines,
