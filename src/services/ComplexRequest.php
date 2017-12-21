@@ -259,6 +259,7 @@ class ComplexRequest extends BaseServiceRequest
             'TaxMode' => $this->taxMode,
             'PhoneOrEmail' => $this->email ? $this->email : $this->phone,
             'Place' => $this->place,
+            'DocumentType' => $this->documentType,
             'FullResponse' => $this->fullResponse,
         ];
 
