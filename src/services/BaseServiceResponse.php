@@ -53,7 +53,7 @@ abstract class BaseServiceResponse
     {
         /** @var stdClass $tag */
         foreach ($tags as $tag) {
-            if (isset($tag->TagID, $tag->Value) && $tagId === $tag->TagID) {
+            if (isset($tag->TagID, $tag->Value) && $tagId === (int) $tag->TagID) {
                 return $tag->Value;
             }
         }
