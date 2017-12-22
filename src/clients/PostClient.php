@@ -4,7 +4,7 @@ namespace Platron\Starrys\clients;
 
 use Platron\Starrys\clients\iClient;
 use Platron\Starrys\CurlException;
-use Platron\Starrys\InvalidJsonException;
+use Platron\Starrys\ServerErrorException;
 use Platron\Starrys\services\BaseServiceRequest;
 use stdClass;
 
@@ -58,7 +58,7 @@ class PostClient implements iClient
 
     /**
      * @inheritdoc
-     * @throws \Platron\Starrys\InvalidJsonException
+     * @throws \Platron\Starrys\ServerErrorException
      * @throws \Platron\Starrys\CurlException
      */
     public function sendRequest(BaseServiceRequest $service)
@@ -73,18 +73,9 @@ class PostClient implements iClient
         $jsonResponse = curl_exec($curl);
 
         $this->fillLogInfo($requestUrl, $requestParameters, $jsonResponse);
+        $this->validateJsonResponse($curl);
 
-        if (curl_errno($curl)) {
-            throw new CurlException($this->logInfo, curl_error($curl), curl_errno($curl));
-        }
-
-        $response = json_decode($jsonResponse);
-
-        if (json_last_error() !== JSON_ERROR_NONE || empty($response)) {
-            throw new InvalidJsonException($this->logInfo, json_last_error_msg(), json_last_error());
-        }
-
-        return $response;
+        return json_decode($jsonResponse);
     }
 
     /**
@@ -122,6 +113,23 @@ class PostClient implements iClient
             curl_setopt($curl, CURLOPT_SSLCERT, $this->certPath);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+        }
+    }
+
+    /**
+     * @param $curl
+     * @throws \Platron\Starrys\ServerErrorException
+     * @throws \Platron\Starrys\CurlException
+     */
+    private function validateJsonResponse($curl)
+    {
+        if (curl_errno($curl)) {
+            throw new CurlException($this->logInfo, curl_error($curl), curl_errno($curl));
+        }
+
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($httpCode !== 200) {
+            throw new ServerErrorException($this->logInfo, $httpCode);
         }
     }
 
