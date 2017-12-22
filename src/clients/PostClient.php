@@ -78,9 +78,9 @@ class PostClient implements iClient
             throw new CurlException($this->logInfo, curl_error($curl), curl_errno($curl));
         }
 
-        $response = !empty(json_decode($jsonResponse)) ? json_decode($jsonResponse) : new stdClass();
+        $response = json_decode($jsonResponse);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (json_last_error() !== JSON_ERROR_NONE || empty($response)) {
             throw new InvalidJsonException($this->logInfo, json_last_error_msg(), json_last_error());
         }
 
