@@ -28,7 +28,7 @@ class ComplexRequest extends BaseServiceRequest
     protected $place;
     /** @var Line[] */
     protected $lines;
-    /** @var int */
+    /** @var string */
     protected $clientId;
     /** @var string */
     protected $password;
@@ -217,7 +217,7 @@ class ComplexRequest extends BaseServiceRequest
 
     /**
      * Установить id клиента. Не обязательно. Подробнее смотри в полной версии документации
-     * @param int $clientId
+     * @param string $clientId
      * @return $this
      */
     public function addClientId($clientId)
