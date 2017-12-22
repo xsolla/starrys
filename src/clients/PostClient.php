@@ -73,7 +73,7 @@ class PostClient implements iClient
         $jsonResponse = curl_exec($curl);
 
         $this->fillLogInfo($requestUrl, $requestParameters, $jsonResponse);
-        $this->validateJsonResponse($curl);
+        $this->validateCurlResponse($curl);
 
         return json_decode($jsonResponse);
     }
@@ -121,7 +121,7 @@ class PostClient implements iClient
      * @throws \Platron\Starrys\ServerErrorException
      * @throws \Platron\Starrys\CurlException
      */
-    private function validateJsonResponse($curl)
+    private function validateCurlResponse($curl)
     {
         if (curl_errno($curl)) {
             throw new CurlException($this->logInfo, curl_error($curl), curl_errno($curl));
