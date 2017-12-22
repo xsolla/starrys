@@ -4,6 +4,7 @@ namespace Platron\Starrys\clients;
 
 use Platron\Starrys\clients\iClient;
 use Platron\Starrys\CurlException;
+use Platron\Starrys\InvalidJsonException;
 use Platron\Starrys\services\BaseServiceRequest;
 use stdClass;
 
@@ -57,6 +58,7 @@ class PostClient implements iClient
 
     /**
      * @inheritdoc
+     * @throws \Platron\Starrys\InvalidJsonException
      * @throws \Platron\Starrys\CurlException
      */
     public function sendRequest(BaseServiceRequest $service)
@@ -68,15 +70,21 @@ class PostClient implements iClient
         $this->addRequestParameters($requestParameters, $curl);
         $this->addSslAuthentication($curl);
 
-        $response = curl_exec($curl);
+        $jsonResponse = curl_exec($curl);
 
-        $this->fillLogInfo($requestUrl, $requestParameters, $response);
+        $this->fillLogInfo($requestUrl, $requestParameters, $jsonResponse);
 
         if (curl_errno($curl)) {
             throw new CurlException($this->logInfo, curl_error($curl), curl_errno($curl));
         }
 
-        return !empty(json_decode($response)) ? json_decode($response) : new stdClass();
+        $response = !empty(json_decode($jsonResponse)) ? json_decode($jsonResponse) : new stdClass();
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new InvalidJsonException($this->logInfo, json_last_error_msg(), json_last_error());
+        }
+
+        return $response;
     }
 
     /**
