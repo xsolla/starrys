@@ -29,7 +29,7 @@ abstract class BaseServiceResponse
 
             if (!empty($response->Response->ErrorMessages)) {
                 foreach ($response->Response->ErrorMessages as $message) {
-                    $this->errorMessages .= $message;
+                    $this->errorMessages []= $message;
                 }
             }
 
