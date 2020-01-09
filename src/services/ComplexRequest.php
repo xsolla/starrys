@@ -8,6 +8,8 @@ class ComplexRequest extends BaseServiceRequest
 {
     /** @var string */
     protected $device = 'auto';
+    /** @var int */
+    protected $maxDocumentsInTurn = 4000;
     /** @var string */
     protected $fullResponse = false;
     /** @var string */
@@ -224,6 +226,17 @@ class ComplexRequest extends BaseServiceRequest
     }
 
     /**
+     * Установить максимальное количество документов в одной смене
+     * @param int $maxDocumentsInTurn
+     * @return $this
+     */
+    public function addMaxDocumentsInTurn($maxDocumentsInTurn)
+    {
+        $this->maxDocumentsInTurn = $maxDocumentsInTurn;
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getParameters()
@@ -240,6 +253,7 @@ class ComplexRequest extends BaseServiceRequest
             'Password' => $this->password,
             'RequestId' => (string)$this->requestId,
             'Lines' => $lines,
+            'MaxDocumentsInTurn' => $this->maxDocumentsInTurn,
             'Cash' => $this->cash,
             'NonCash' => $this->nonCash,
             'AdvancePayment' => $this->advancePayment,
