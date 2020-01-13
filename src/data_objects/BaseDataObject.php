@@ -2,19 +2,21 @@
 
 namespace Platron\Starrys\data_objects;
 
-abstract class BaseDataObject {
+abstract class BaseDataObject
+{
     /**
-	 * Получить параметры, сгенерированные командой
-	 * @return array
-	 */
-	public function getParameters() {
-		$filledvars = array();
-		foreach (get_object_vars($this) as $name => $value) {
-			if ($value) {
-				$filledvars[$name] = $value;
-			}
-		}
+     * Получить параметры, сгенерированные командой
+     * @return array
+     */
+    public function getParameters()
+    {
+        $filledvars = array();
+        foreach (get_object_vars($this) as $name => $value) {
+            if ($value) {
+                $filledvars[$name] = $value;
+            }
+        }
 
-		return $filledvars;
-	}
+        return $filledvars;
+    }
 }
